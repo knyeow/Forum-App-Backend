@@ -1,1 +1,6 @@
-**/HelperTxts
+**/HelperTxts/*
+
+**/obj/*
+**/bin/*
+
+**/*appsettings*.json
