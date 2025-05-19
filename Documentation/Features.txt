@@ -1,0 +1,20 @@
+System:
+    -Secure Login System:
+        -Two Factor
+        -Google
+        -Password Rules
+
+    -HTTPS:
+        -All services would stream HTTPS
+
+    -Admin:
+        -Management
+        -Authority
+
+
+Forum:
+    -#Hashtags
+    -Konu
+    -Post and delete posts
+    -#Image posts
+    -#Like,Comment,Reply
