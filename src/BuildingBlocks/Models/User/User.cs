@@ -11,6 +11,8 @@ namespace MyBuildingBlocks.Models.User
 
         [Required, EmailAddress, MaxLength(200)]
         public string Email { get; set; }
+        [Required,MaxLength(200)]
+        public string Username { get; set; }
 
         [Required, MaxLength(255)]
         public string PasswordHash { get; set; }

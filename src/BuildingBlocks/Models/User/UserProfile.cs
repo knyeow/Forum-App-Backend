@@ -18,10 +18,6 @@ public class UserProfile
     [Required, MaxLength(100)]
     public string LastName { get; set; }
 
-    [Required, MaxLength(100)]
-
-    public string PhoneNumber { get; set; }
-
     public string? ProfilePictureUrl { get; set; }
 
     public DateTime? LastLoginDate { get; set; }

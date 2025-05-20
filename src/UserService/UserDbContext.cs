@@ -17,6 +17,15 @@ public class UserDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasKey(u => u.Id);
 
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
+
         modelBuilder.Entity<UserProfile>()
             .HasKey(up => up.Id);
 
@@ -25,6 +34,9 @@ public class UserDbContext : DbContext
             .WithOne(up => up.User)
             .HasForeignKey<UserProfile>(up => up.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+
+
 
         base.OnModelCreating(modelBuilder);
     }
