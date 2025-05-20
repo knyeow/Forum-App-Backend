@@ -11,6 +11,7 @@ System:
         -Management
         -Authority
 
+    -Logging
 
 Forum:
     -#Hashtags
@@ -18,3 +19,4 @@ Forum:
     -Post and delete posts
     -#Image posts
     -#Like,Comment,Reply
+    -Daha fazla post yükle (post sınırı)

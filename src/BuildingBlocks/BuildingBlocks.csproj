@@ -4,6 +4,15 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>8934e9ec-3046-49ae-beec-8d6936a373e1</UserSecretsId>
+    <Version>1.0.0</Version>
+    <Authors>knyeow</Authors>
+    <Company>knyeow</Company>
+    <PackageId>MyBuildingBlocks</PackageId>
+    <Description>Building Blocks.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
 
 </Project>

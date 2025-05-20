@@ -4,3 +4,7 @@
 **/bin/*
 
 **/*appsettings*.json
+
+**/configuration.json
+
+**backend.sln
