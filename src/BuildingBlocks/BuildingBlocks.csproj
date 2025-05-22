@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <UserSecretsId>8934e9ec-3046-49ae-beec-8d6936a373e1</UserSecretsId>
-    <Version>1.1.5</Version>
+    <Version>1.2.0</Version>
     <Authors>knyeow</Authors>
     <Company>knyeow</Company>
     <PackageId>MyBuildingBlocks</PackageId>
@@ -13,6 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
   </ItemGroup>
 
 </Project>

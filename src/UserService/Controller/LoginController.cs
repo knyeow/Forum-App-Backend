@@ -7,6 +7,8 @@ using MyBuildingBlocks.Models.User;
 using System.ComponentModel.DataAnnotations;
 using Azure.Core;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
+using MyBuildingBlocks.JWT;
 
 
 
@@ -16,16 +18,17 @@ public class LoginController : ControllerBase
 {
     private readonly UserDbContext _context;
 
+    private readonly JwtTokenService _jwtTokenService;
     private readonly ILoggerService _loggerService;
 
     private readonly IPasswordHasher<User> _passwordHasher;
 
-    public LoginController(UserDbContext context, ILoggerService loggerService, IPasswordHasher<User> passwordHasher)
+    public LoginController(UserDbContext context,JwtTokenService jwtTokenService ,ILoggerService loggerService, IPasswordHasher<User> passwordHasher)
     {
         _context = context;
+        _jwtTokenService = jwtTokenService;
         _loggerService = loggerService;
         _passwordHasher = passwordHasher;
-
     }
 
     [HttpPost]
@@ -72,7 +75,9 @@ public class LoginController : ControllerBase
             if (passwordVerificationResult == PasswordVerificationResult.Success)
             {
                 // TODO: Return success response (e.g., JWT token or user info)
-                return Ok(new { message = "Login successful." });
+                var token = _jwtTokenService.GenerateToken(user);
+
+                return Ok(new { token });
             }
             else
             {
@@ -145,9 +150,7 @@ public class LoginController : ControllerBase
 
         return Ok("Succesfully Registered");
     }
-    
 
-    
     private bool IsValidEmail(string email)
     {
         return new EmailAddressAttribute().IsValid(email);

@@ -17,6 +17,8 @@ namespace MyBuildingBlocks.Models.User
         [Required, MaxLength(255)]
         public string PasswordHash { get; set; }
 
+        public string Role { get; set; } = "User";
+
         public bool IsActive { get; set; } = true;
 
         public bool EmailConfirmed { get; set; } = false;

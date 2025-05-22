@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4" />
-    <PackageReference Include="MyBuildingBlocks" Version="1.1.5" />
+    <PackageReference Include="MyBuildingBlocks" Version="1.2.0" />
 
   <None Update="configuration.json">
     <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

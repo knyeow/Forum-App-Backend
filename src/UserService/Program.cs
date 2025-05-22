@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using MyBuildingBlocks.Logger;
 using Microsoft.AspNetCore.Identity;
 using MyBuildingBlocks.Models.User;
+using MyBuildingBlocks.JWT;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 //implementing custom general configuration.json
 var configurationPath = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "../../configuration.json"));
@@ -16,7 +19,9 @@ if (configuration is null)
     throw new FileNotFoundException("configuration.json file not found.");
 }
 
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 //Connection String declaring
 var connectionString = configuration["ConnectionStrings:DefaultConnection"];
@@ -38,7 +43,33 @@ catch (Exception ex)
     throw new Exception("Error while configuring the database context.", ex);
 }
 
+
+var JwtKey = configuration["Jwt:Key"];
+
+if (JwtKey == null)
+{
+    throw new ArgumentNullException("Jwt Key  is not set in configuration.");
+}
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = configuration["Jwt:Issuer"],
+            ValidAudience = configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey))
+        };
+    });
+
 //Scopes
+
+builder.Services.AddScoped(_ => new JwtTokenService(configuration));
+
 //Logger
 var logDirectory = "../../Logs";
 builder.Services.AddScoped<ILoggerService>(provider =>
