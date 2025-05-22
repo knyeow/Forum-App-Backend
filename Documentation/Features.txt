@@ -17,6 +17,6 @@ Forum:
     -#Hashtags
     -Konu
     -Post and delete posts
-    -#Image posts
+    -#Image and video posts
     -#Like,Comment,Reply
     -Daha fazla post yükle (post sınırı)
