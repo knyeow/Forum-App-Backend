@@ -9,6 +9,7 @@ using Azure.Core;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authorization;
 using MyBuildingBlocks.JWT;
+using UserService.Utilities;
 
 
 
@@ -42,7 +43,7 @@ public class LoginController : ControllerBase
 
         if (!string.IsNullOrWhiteSpace(request.EmailOrUsername))
         {
-            if (IsValidEmail(request.EmailOrUsername))
+            if (Utilities.IsValidEmail(request.EmailOrUsername))
             {
                 isEmailEntered = true;
 
@@ -50,7 +51,7 @@ public class LoginController : ControllerBase
                 .AsNoTracking()
                 .FirstOrDefault(u => u.Email == request.EmailOrUsername);
             }
-            else if (ContainsSpecialCharacters(request.EmailOrUsername))
+            else if (Utilities.ContainsSpecialCharacters(request.EmailOrUsername))
             {
                 return BadRequest(new { message = "Usernames can not contain special characters." });
             }
@@ -75,8 +76,18 @@ public class LoginController : ControllerBase
             if (passwordVerificationResult == PasswordVerificationResult.Success)
             {
                 // TODO: Return success response (e.g., JWT token or user info)
-                var token = _jwtTokenService.GenerateToken(user);
+                var userProfile = _context.UserProfiles.SingleOrDefault(up => up.UserId == user.Id);
+                if (userProfile != null)
+                {
+                    userProfile.LastLoginDate = DateTime.Now;
+                    await _context.SaveChangesAsync();
+                }
+                else
+                    _loggerService.LogError($"ProfileNotFound: User don't have profile id: {user.Id}");
 
+
+                _loggerService.LogInfo($"{user.Username} logged in");
+                var token = _jwtTokenService.GenerateToken(user);
                 return Ok(new { token });
             }
             else
@@ -101,12 +112,14 @@ public class LoginController : ControllerBase
             }
         }
 
-        if (!IsValidEmail(request.Email))
+        if (!Utilities.IsValidEmail(request.Email))
             return BadRequest("Please enter a valid email");
 
-        if (ContainsSpecialCharacters(request.Username))
+        if (Utilities.ContainsSpecialCharacters(request.Username))
             return BadRequest("Username can not contain special characters");
 
+        if (!Utilities.IsPasswordSixDigit(request.Password))
+            return BadRequest("Password must contain at least 6 digit");
 
         if (await _context.Users.AnyAsync(u => u.Email == request.Email))
             {
@@ -151,14 +164,5 @@ public class LoginController : ControllerBase
         return Ok("Succesfully Registered");
     }
 
-    private bool IsValidEmail(string email)
-    {
-        return new EmailAddressAttribute().IsValid(email);
-    }
-    private bool ContainsSpecialCharacters(string input)
-    {
-        // Sadece harf ve rakamlara izin verir — diğer her şey "özel karakter" sayılır
-        return Regex.IsMatch(input, @"[^a-zA-Z0-9]");
-    }
 
 }
